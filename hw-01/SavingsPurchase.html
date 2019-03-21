@@ -1,0 +1,101 @@
+<html>
+<head>
+  <title>Assignment 1</title>
+  <h1>Assignment 1: Savings and Desired Purchases in 5 Years</h1>
+  <style>
+    *   { font-family: Helvetica, sans-serif; }
+    h1  { margin-top: 12px; }
+    div { background-color: WhiteSmoke; }
+  </style>
+  <script type="text/javascript">
+
+    // Get input for comparison
+    var sav_p_c = prompt("Enter return on savings (percent)");
+    var inf_p_c = prompt("Enter inflation rate (percent) ");
+
+    // Info associated with 3 people
+    var people = [
+    	{
+    		name: "Alice",
+    		savings: 1000,
+    		thing1: "car",
+    		thing2: "boat"
+    	}, {
+    		name: "Bob",
+    		savings: 5000,
+    		thing1: "car",
+    		thing2: "condo",
+    	}, {
+    		name: "Carol",
+    		savings: 7000,
+    		thing1: "boat",
+    		thing2: "condo",
+    	}
+  	];
+
+    // Cost associated with 3 items
+  	var things = [
+    	{
+    		label: "car",
+    		value: 500,
+    	}, {
+    		label: "boat",
+    		value: 400,
+    	}, {
+    		label: "condo",
+    		value: 5000,
+    	}
+  	];
+
+    // Compute growth over 5 years given input percentages
+    var five_year_s = Math.pow( (1+(sav_p_c/100)), 5 );
+    var five_year_i = Math.pow( (1+(inf_p_c/100)), 5 );
+
+    // Compute total current cost for things each person wants
+    costs = sumCosts( people, things );
+
+    // Compute max value for costs or savings to fit data in diagram
+    var scale= Math.max(
+      Math.max.apply(Math, people.map(function(o) { return five_year_s*o.savings; })),
+		  Math.max.apply(Math,costs.map(function(o)   { return five_year_i*o; }))
+    );
+    document.write("<hr weight='0.5px'/><h2>2019 savings and costs</h2>");
+    createDiagram(people,costs,1,1);
+    document.write("<hr weight='0.5px'/><h2>2024, assuming investment return "+sav_p_c+"%, inflation "+inf_p_c+"%</h2>");
+    createDiagram(people,costs,five_year_s,five_year_i);
+
+    // Return array of total cost of purchases per person
+    function sumCosts (p, t) {
+  	  var ncosts = [];
+    	for (var i=0;i<p.length;i++) {
+        ncosts[i] = 0;
+        for (var j=0;j<t.length;j++) {
+          if (t[j].label == p[i].thing1 || t[j].label == p[i].thing2) ncosts[i] += t[j].value;
+        }
+      }
+    	return ncosts;
+  	};
+
+    // Create diagram for savings and costs
+    function createDiagram(p, t, a, b) {
+      var x_pos = 5;
+      var y_pos = 0;
+      var output = "<div> <svg width='1000' height='400'>";
+      for(var i=0; i < p.length; i++) {
+        var height1 = (parseInt(a*p[i].savings*300/scale));
+        var height2 = (parseInt(b*costs[i]*300/scale));
+    		output += "<rect x= '"+x_pos+"' y= '"+(300-height1);
+    		output += "' width='50' height = '"+height1+"' fill= 'Black' />";
+        output += "<rect x= '"+(x_pos+50)+"' y= '"+(300-height2);
+    		output += "' width='50' height = '"+height2+"' fill= 'Crimson' />";
+        output += "<text x='"+x_pos+"' y='340'>"+p[i].name+"</text>";
+		    x_pos += 200;
+	    }
+      output = output + "  </svg> </div> ";
+      document.write(output);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>

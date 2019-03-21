@@ -1,0 +1,30 @@
+body {
+  width: 560px;
+  margin: auto;
+  margin-top: 72px;
+  background: #3C4066;
+  font-family: "Helvetica", sans-serif;
+  color: white;
+}
+
+div {
+  padding: 8px;
+  background: #BBB2E8;
+}
+
+div p {
+  color: black;
+}
+
+p, li {
+  font-family: "Verdana", sans-serif;
+}
+
+li {
+  color: grey;
+  background: white;
+}
+
+.highlight {
+  color: blue;
+}
